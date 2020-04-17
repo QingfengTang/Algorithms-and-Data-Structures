@@ -11,6 +11,7 @@ class Sort():
         2.由于每次遍历大的数已经放好，所以对末尾已经排号的就不再排序
         '''
         for i in range(len(array)):
+            # 每排一次需要一次循环
             for j in range(len(array)-i-1):
                 # 此处-i是因为对已经排好的就不再动了
                 # -1是由于采用了array[j+1]防止越界
