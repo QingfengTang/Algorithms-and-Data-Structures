@@ -146,11 +146,11 @@ class SimulatedStack():
             return self.queue1.pop()
         else:
             while len(self.queue1) != 1:
-                self.queue2.append(self.queue1.pop(-1))
+                self.queue2.append(self.queue1.pop(0))
 
             node = self.queue1.pop()
             while len(self.queue2):
-                self.queue1.append(self.queue2.pop(-1))
+                self.queue1.append(self.queue2.pop(0))
             
             return node
 
@@ -182,4 +182,9 @@ if __name__=='__main__':
     print(queue.show_queue()) 
     queue.deQueue()
     print(queue.show_queue())
-    print(queue.is_empty()) 
+    print(queue.is_empty())
+    print('队列模拟栈')
+    stack = SimulatedStack()
+    stack.enQueue(2)
+    stack.enQueue(3)
+    print(stack.deQueue()) 
