@@ -60,6 +60,30 @@ class LinkList():
             q = r
         
         return p
+    
+    def FindKthToTail(self, head, k):
+        '''
+        输入一个链表，输出该链表中倒数第k个结点
+        solution1:遍历整个链表，知道链表的长度n，如果n>k则返回正数第n-k个节点
+        solution2:采用两个指针，一个快指针，一个慢指针，让快指针先向前移动K个节点后，
+                  再同时移动两个指针，当快指针遍历结束时，慢指针所在的位置就是倒数第K个节点
+        '''
+        fast_node = head
+        slow_node = head
+
+        while k:
+            # 当k大于链表的长度时退出
+            if not fast_node:
+                return None
+            fast_node = fast_node.next
+            k -= 1
+        
+        while fast_node:
+            fast_node = fast_node.next
+            slow_node = slow_node.next
+        
+        return slow_node
+            
 
 
 
