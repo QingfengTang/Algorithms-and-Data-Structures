@@ -1,5 +1,8 @@
 '''
 将一组数按照大小排序
+!!!note:当列表作为参数在函数间传递时，对列表的修改要注意深浅拷贝
+例如 对于列表array 在函数中进行array[i]=value 这种修改时为深拷贝，会对原来的array进行修改
+     而对于array=[value]时为浅拷贝，这是array的变化不会影响原来的array
 '''
 
 class Sort():
@@ -109,16 +112,95 @@ class Sort():
         '''
         堆排序
         '''
+        if not array:
+            return None
+        # 构建最大堆
+        for i in range((len(array)-1-1)//2, -1, -1):
+            self.CreateMaxHeap(array, i, len(array))
+        
+        #
+        for i in range((len(array)-1), 0, -1):
+            temp = array[0]
+            array[0] = array[i]
+            array[i] = temp
+            self.CreateMaxHeap(array, 0, i) 
+        
+
         return array
+
+    def CreateMaxHeap(self, array, index, length):
+        '''
+        创建最大堆
+        '''
+        left_index = 2*index+1
+        right_index = 2*index+2
+        if left_index < length:
+            left_val = array[left_index]
+            if right_index >= length:
+                max_index = left_index
+                max_val = left_val
+            else:
+                right_val = array[right_index]
+                if left_val > right_val:
+                    max_index = left_index
+                    max_val = left_val
+                else:
+                    max_index = right_index
+                    max_val = right_val
+            
+            if array[index] < max_val:
+                array[index], array[max_index] = array[max_index], array[index]
+            self.CreateMaxHeap(array, max_index, length)
+            return array
+        
+
+
+    
+    def MergeSort(self, array):
+        '''
+        并归排序 NlogN
+        1.采用分而治之的策略，将array不断的二分一直到一个元素
+        2.合并，依次比较left和right的大小，并移动值小的指针
+        '''
+        if len(array) <= 1:
+            return array
+        
+        middle = len(array) // 2
+        left = self.MergeSort(array[:middle])
+        right = self.MergeSort(array[middle:])
+
+        return self.MergeFun(left, right)
+    
+    def MergeFun(self, left, right):
+        '''
+        并归排序的 合并部分
+        '''
+        temp = []
+        lpoint = 0
+        rpoint = 0
+        while lpoint < len(left) and rpoint < len(right):
+            if left[lpoint] < right[rpoint]:
+                temp.append(left[lpoint])
+                lpoint += 1
+            else:
+                temp.append(right[rpoint])
+                rpoint += 1
+
+        if lpoint == len(left):
+            temp += right[rpoint:]
+        else:
+            temp += left[lpoint:]
+
+        return temp 
 
 
 
 
 
 if __name__ == '__main__':
-    array = [2,5,1,3,8,5,7,4,3,9]
+    array = [2,5,3,8,5,7,4,9]
     solution = Sort()
-    result = solution.QuickSortMain(array)
+    result = solution.HeapSort(array)
     print(result)
 
 
